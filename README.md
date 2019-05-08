@@ -1,0 +1,3 @@
+# DuckGo.DependencyInjection
+.net core DI 扩展
+未完待续.....
