@@ -22,7 +22,7 @@ namespace DependencyInjection
             container.AddOrUpdate(key, implementationType, (_key, oldType) => implementationType);
         }
 
-        public static object GetImplementationType(Type serviceType, object key)
+        public static object GetImplementation(Type serviceType, object key)
         {
             if (!ServiceContainer.TryGetValue(serviceType, out ConcurrentDictionary<object, object> container))
             {

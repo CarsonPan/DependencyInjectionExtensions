@@ -32,11 +32,11 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(key));
             }
             ServiceCollectionWithKey.AddServiceWithKey(serviceType, implementationType, key);
-            return services.AddTransient(serviceType, implementationType);
+            return services.AddTransient(implementationType);
         }
 
 
-        public static IServiceCollection AddTransientWithKey<TService, TImplementation>(this IServiceCollection services,object key)
+        public static IServiceCollection AddTransientWithKey<TService, TImplementation>(this IServiceCollection services, object key)
             where TService : class
             where TImplementation : class, TService
         {
@@ -76,9 +76,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(key));
             }
             ServiceCollectionWithKey.AddServiceWithKey(serviceType, implementationType, key);
-            return services.AddScoped(serviceType, implementationType);
+            return services.AddScoped(implementationType);
         }
-        public static IServiceCollection AddScopedWithKey<TService, TImplementation>(this IServiceCollection services,object key)
+        public static IServiceCollection AddScopedWithKey<TService, TImplementation>(this IServiceCollection services, object key)
             where TService : class
             where TImplementation : class, TService
         {
@@ -90,7 +90,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 throw new ArgumentNullException(nameof(key));
             }
-            return services.AddScopedWithKey(typeof(TService), typeof(TImplementation),key);
+            return services.AddScopedWithKey(typeof(TService), typeof(TImplementation), key);
         }
 
         public static IServiceCollection AddSingletonWithKey(
@@ -118,11 +118,11 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(key));
             }
             ServiceCollectionWithKey.AddServiceWithKey(serviceType, implementationType, key);
-            return services.AddSingleton(serviceType, implementationType);
+            return services.AddSingleton(implementationType);
         }
 
 
-        public static IServiceCollection AddSingletonWithKey<TService, TImplementation>(this IServiceCollection services,object key)
+        public static IServiceCollection AddSingletonWithKey<TService, TImplementation>(this IServiceCollection services, object key)
             where TService : class
             where TImplementation : class, TService
         {
@@ -134,7 +134,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 throw new ArgumentNullException(nameof(key));
             }
-            return services.AddSingletonWithKey(typeof(TService), typeof(TImplementation),key);
+            return services.AddSingletonWithKey(typeof(TService), typeof(TImplementation), key);
         }
 
         public static IServiceCollection AddSingletonWithKey(
@@ -163,7 +163,7 @@ namespace Microsoft.Extensions.DependencyInjection
             }
             ServiceCollectionWithKey.AddServiceWithKey(serviceType, implementationInstance, key);
             //var serviceDescriptor = new ServiceDescriptor(serviceType, implementationInstance);
-           // services.Add(serviceDescriptor);
+            // services.Add(serviceDescriptor);
             return services;
         }
 
@@ -186,7 +186,12 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 throw new ArgumentNullException(nameof(key));
             }
-            return services.AddSingletonWithKey(typeof(TService), implementationInstance,key);
+            return services.AddSingletonWithKey(typeof(TService), implementationInstance, key);
+        }
+
+        public static IServiceCollection Install(this IServiceCollection services)
+        {
+            return services.AddScoped<IServiceProvider>(sp => sp.CreateScope().ServiceProvider);
         }
     }
 }
