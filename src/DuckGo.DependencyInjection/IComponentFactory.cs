@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DuckGo.DependencyInjection
-{
+namespace Microsoft.Extensions.DependencyInjection
+{ 
     public interface IComponentFactory<TKey,TService>
+        where TService:class
     {
         TService GetService(TKey key);
         TService GetRequiredService(TKey key);
