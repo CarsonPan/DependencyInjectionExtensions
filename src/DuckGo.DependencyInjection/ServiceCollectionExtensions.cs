@@ -1,4 +1,5 @@
 ﻿using DependencyInjection;
+using DuckGo.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -193,12 +194,60 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddIocExtension(this IServiceCollection services)
         {
             return services.AddScoped<IServiceProvider>(sp => sp.CreateScope().ServiceProvider)
-                           .AddScoped(typeof(IComponentFactory<,>),typeof(ComponentFactory<,>));
+                           .AddScoped(typeof(IComponentFactory<,>), typeof(ComponentFactory<,>));
         }
 
-        public static IServiceCollection AddAssemblyByConvention(this IServiceCollection services,Assembly assembly)
+        public static IServiceCollection AddAssemblyByConvention(this IServiceCollection services, Assembly assembly)
         {
-            //TODO: 待实现
+            services.Add(assembly, typeof(ISingleton))
+                    .Add(assembly, typeof(IScoped))
+                    .Add(assembly, typeof(ITransient))
+                    .Add(assembly);
+            return services;
+        }
+
+        /// <summary>
+        /// 特性标记注入
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="assembly"></param>
+        /// <returns></returns>
+        private static IServiceCollection Add(this IServiceCollection services, Assembly assembly)
+        {
+            IEnumerable<Type> implementationTypes = ReflectionHelper.GetTypesByComponentAttribute(assembly);
+            ComponentAttribute component = null;
+            foreach (Type implementationType in implementationTypes)
+            {
+                component=implementationType.GetCustomAttribute<ComponentAttribute>();
+                if (component == null)
+                {
+                    continue;
+                }
+                if (!component.ServiceType.IsAssignableFrom(implementationType))
+                {
+                    throw new ArgumentException($"类型{implementationType.FullName}不是派生自类型{component.ServiceType}");
+                }
+                services.Add(new ServiceDescriptor(component.ServiceType, implementationType, component.ServiceLifetime));
+            }
+            return services;
+        }
+        /// <summary>
+        /// 标志接口注入
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="assembly"></param>
+        /// <param name="flagType"></param>
+        /// <returns></returns>
+        private static IServiceCollection Add(this IServiceCollection services, Assembly assembly, Type flagType)
+        {
+            IEnumerable<Type> implementationTypes = ReflectionHelper.GetTypes(assembly, flagType);
+            Type serviceType = null;
+            ServiceLifetime serviceLifetime = ReflectionHelper.GetServiceLifetime(flagType);
+            foreach (Type implementationType in implementationTypes)
+            {
+                serviceType = ReflectionHelper.GetDefaultServiceType(implementationType) ?? implementationType;
+                services.Add(new ServiceDescriptor(serviceType, implementationType, serviceLifetime));
+            }
             return services;
         }
     }
