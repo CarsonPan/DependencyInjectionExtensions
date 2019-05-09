@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public class ComponentAttribute
+    [AttributeUsage(AttributeTargets.Class,AllowMultiple =false,Inherited =false)]
+    public class ComponentAttribute:Attribute
     {
         public ComponentAttribute(Type erviceType)
         {
