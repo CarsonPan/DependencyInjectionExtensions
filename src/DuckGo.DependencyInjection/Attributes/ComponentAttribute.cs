@@ -6,6 +6,11 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public class ComponentAttribute
     {
+        public ComponentAttribute(Type erviceType)
+        {
+            ServiceType = erviceType;
+        }
+
         /// <summary>
         /// 键
         /// </summary>
@@ -13,7 +18,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// 服务类型
         /// </summary>
-        public Type ServiceType { get; set; }
+        public Type ServiceType { get;  }
 
         /// <summary>
         /// 生命周期

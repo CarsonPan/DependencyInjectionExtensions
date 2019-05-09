@@ -1,6 +1,7 @@
 ﻿using DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -167,7 +168,7 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
-        public static IServiceCollection AddSingleton<TService>(
+        public static IServiceCollection AddSingletonWithKey<TService>(
             this IServiceCollection services,
             TService implementationInstance,
             object key)
@@ -189,9 +190,16 @@ namespace Microsoft.Extensions.DependencyInjection
             return services.AddSingletonWithKey(typeof(TService), implementationInstance, key);
         }
 
-        public static IServiceCollection Install(this IServiceCollection services)
+        public static IServiceCollection AddIocExtension(this IServiceCollection services)
         {
-            return services.AddScoped<IServiceProvider>(sp => sp.CreateScope().ServiceProvider);
+            return services.AddScoped<IServiceProvider>(sp => sp.CreateScope().ServiceProvider)
+                           .AddScoped(typeof(IComponentFactory<,>),typeof(ComponentFactory<,>));
+        }
+
+        public static IServiceCollection AddAssemblyByConvention(this IServiceCollection services,Assembly assembly)
+        {
+            //TODO: 待实现
+            return services;
         }
     }
 }

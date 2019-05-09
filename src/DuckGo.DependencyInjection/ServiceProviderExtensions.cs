@@ -10,7 +10,7 @@ namespace Microsoft.Extensions.DependencyInjection
     /// </summary>
     public static class ServiceProviderExtensions
     {
-        public static object GetServiceWidthKey(this IServiceProvider provider,Type serviceType,object key)
+        public static object GetServiceWithKey(this IServiceProvider provider,Type serviceType,object key)
         {
             if (provider == null)
             {
@@ -40,7 +40,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 return implementation;
             }
         }
-        public static TService GetServiceWidthKey<TService>(this IServiceProvider provider, object key)
+        public static TService GetServiceWithKey<TService>(this IServiceProvider provider, object key)
             where TService : class
         {
             if (provider == null)
@@ -51,7 +51,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 throw new ArgumentNullException(nameof(key));
             }
-            return (TService)provider.GetServiceWidthKey(typeof(TService), key);
+            return (TService)provider.GetServiceWithKey(typeof(TService), key);
         }
 
         public static object GetRequiredServiceWithKey(this IServiceProvider provider, Type serviceType,object key)
