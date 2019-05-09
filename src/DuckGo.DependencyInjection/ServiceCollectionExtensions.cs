@@ -227,7 +227,15 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     throw new ArgumentException($"类型{implementationType.FullName}不是派生自类型{component.ServiceType}");
                 }
-                services.Add(new ServiceDescriptor(component.ServiceType, implementationType, component.ServiceLifetime));
+                if (component.Key != null)
+                {
+                    ServiceCollectionWithKey.AddServiceWithKey(component.ServiceType, implementationType, component.Key);
+                    services.Add(new ServiceDescriptor(implementationType, implementationType, component.ServiceLifetime));
+                }
+                else
+                {
+                    services.Add(new ServiceDescriptor(component.ServiceType, implementationType, component.ServiceLifetime));
+                }
             }
             return services;
         }
