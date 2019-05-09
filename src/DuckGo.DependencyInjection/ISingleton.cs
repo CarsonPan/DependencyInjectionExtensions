@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DuckGo.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection
 {
-    interface ISingleton
+    public  interface ISingleton
     {
     }
 }

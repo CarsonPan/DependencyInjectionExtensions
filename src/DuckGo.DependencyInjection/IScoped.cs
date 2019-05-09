@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DuckGo.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection
 {
     public interface IScoped
     {
