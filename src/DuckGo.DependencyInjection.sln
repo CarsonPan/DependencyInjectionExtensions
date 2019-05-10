@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuckGo.DependencyInjection", "DuckGo.DependencyInjection\DuckGo.DependencyInjection.csproj", "{C9A8B3C4-1CD5-4734-A38F-2F53B4941A1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DuckGo.DependencyInjection", "DuckGo.DependencyInjection\DuckGo.DependencyInjection.csproj", "{C9A8B3C4-1CD5-4734-A38F-2F53B4941A1F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DuckGo.Test", "DuckGo.Test", "{85AF0DAC-DB2F-4B7B-A730-E1329BA05B43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuckGo.DependencyInjectionTest", "DuckGo.DependencyInjectionTest\DuckGo.DependencyInjectionTest.csproj", "{A0A13C2E-C4ED-4A1E-9BC9-4E9A221E4B3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{C9A8B3C4-1CD5-4734-A38F-2F53B4941A1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9A8B3C4-1CD5-4734-A38F-2F53B4941A1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9A8B3C4-1CD5-4734-A38F-2F53B4941A1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0A13C2E-C4ED-4A1E-9BC9-4E9A221E4B3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0A13C2E-C4ED-4A1E-9BC9-4E9A221E4B3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0A13C2E-C4ED-4A1E-9BC9-4E9A221E4B3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0A13C2E-C4ED-4A1E-9BC9-4E9A221E4B3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A0A13C2E-C4ED-4A1E-9BC9-4E9A221E4B3C} = {85AF0DAC-DB2F-4B7B-A730-E1329BA05B43}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {26A0982A-7568-4A96-9E89-63D395E54F83}
