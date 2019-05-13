@@ -8,7 +8,7 @@ namespace DependencyInjection
     /// <summary>
     /// 服务容器
     /// </summary>
-    public static class ServiceCollectionWithKey
+    internal static class ServiceCollectionWithKey
     {
         public static ConcurrentDictionary<Type, ConcurrentDictionary<object,object>> ServiceContainer = new ConcurrentDictionary<Type, ConcurrentDictionary<object, object>>();
         public static void AddServiceWithKey<TService, TImplementationType>(object key)
