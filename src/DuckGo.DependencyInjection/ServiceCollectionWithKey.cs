@@ -10,7 +10,7 @@ namespace DependencyInjection
     /// </summary>
     internal static class ServiceCollectionWithKey
     {
-        public static ConcurrentDictionary<Type, ConcurrentDictionary<object,object>> ServiceContainer = new ConcurrentDictionary<Type, ConcurrentDictionary<object, object>>();
+        private readonly static ConcurrentDictionary<Type, ConcurrentDictionary<object,object>> ServiceContainer = new ConcurrentDictionary<Type, ConcurrentDictionary<object, object>>();
         public static void AddServiceWithKey<TService, TImplementationType>(object key)
         {
             AddServiceWithKey(typeof(TService), typeof(TImplementationType), key);
