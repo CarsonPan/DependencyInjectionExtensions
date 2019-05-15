@@ -206,6 +206,66 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
+        public static IServiceCollection RemoveWithKey<TService>(this IServiceCollection services, object key)
+        {
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            return services.RemoveWithKey(typeof(TService), key);
+        }
+
+        public static IServiceCollection RemoveWithKey(this IServiceCollection services,Type serviceType, object key)
+        {
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
+            if (serviceType == null)
+            {
+                throw new ArgumentNullException(nameof(serviceType));
+            }
+
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            object implementation = ServiceCollectionWithKey.GetImplementation(serviceType, key);
+            if (implementation == null)
+            {
+                return services;
+            }
+            if (implementation is Type implementationType)
+            {
+                ServiceCollectionWithKey.RemoveServiceWithKey(serviceType, key);
+                RemoveService(services, implementationType);
+            }
+            else
+            {
+                ServiceCollectionWithKey.RemoveServiceWithKey(serviceType, key); 
+            }
+            return services;
+        }
+
+        private static void RemoveService(IServiceCollection services,Type serviceType)
+        {
+            for (int i = 0; i < services.Count; i++)
+            {//多个注册都移除
+                if (services[i].ServiceType == serviceType && services[i].ImplementationType == serviceType)
+                {
+                    services.Remove(services[i]);
+                }
+            }
+        }
+
         /// <summary>
         /// 特性标记注入
         /// </summary>

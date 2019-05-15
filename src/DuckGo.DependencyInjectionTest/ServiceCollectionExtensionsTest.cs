@@ -65,5 +65,23 @@ namespace DuckGo.DependencyInjectionTest
             service.ShouldBeType(typeof(TestSingleton0));
             serviceProvider.GetRequiredServiceWithKey<ITestSingleton>("A").ShouldEqual(instance);
         }
+
+        [Fact]
+        public void RemoveWithKeyTest()
+        {
+            ServiceCollection services = new ServiceCollection();
+            services.AddAssemblyByConvention(this.GetType().Assembly);
+            services.RemoveWithKey(typeof(ITestComponent), "A");
+            int count = services.Count(s => s.ServiceType == typeof(TestComponentA) && s.ImplementationType == typeof(TestComponentA) && s.Lifetime == ServiceLifetime.Transient);
+            count.ShouldEqual(0);
+
+            count = services.Count(s => s.ServiceType == typeof(TestComponentB) && s.ImplementationType == typeof(TestComponentB) && s.Lifetime == ServiceLifetime.Transient);
+            count.ShouldEqual(1);
+
+            services.RemoveWithKey(typeof(ITestComponent), "B");
+            count = services.Count(s => s.ServiceType == typeof(TestComponentB) && s.ImplementationType == typeof(TestComponentB) && s.Lifetime == ServiceLifetime.Transient);
+            count.ShouldEqual(0);
+
+        }
     }
 }

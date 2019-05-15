@@ -22,6 +22,14 @@ namespace DependencyInjection
             container.AddOrUpdate(key, implementationType, (_key, oldType) => implementationType);
         }
 
+        public static void RemoveServiceWithKey(Type serviceType, object key)
+        {
+            if (ServiceContainer.TryGetValue(serviceType, out ConcurrentDictionary<object, object> container))
+            {
+                container.TryRemove(key, out object existObj);
+            }
+        }
+
         public static object GetImplementation(Type serviceType, object key)
         {
             if (!ServiceContainer.TryGetValue(serviceType, out ConcurrentDictionary<object, object> container))
