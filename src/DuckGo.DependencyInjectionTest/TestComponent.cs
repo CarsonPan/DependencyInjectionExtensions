@@ -29,4 +29,21 @@ namespace DuckGo.DependencyInjectionTest
     public class TestComponentD : ITestComponent
     {
     }
+
+    [Component(typeof(ITestComponent), Key = 0)]
+    public class TestComponent0 : ITestComponent
+    {
+    }
+    [Component(typeof(ITestComponent), Key = 1)]
+    public class TestComponent1 : ITestComponent
+    {
+    }
+    [Component(typeof(ITestComponent), Key = 2)]
+    public class TestComponent2 : ITestComponent
+    {
+    }
+    [Component(typeof(ITestComponent), Key = 3)]
+    public class TestComponent3 : ITestComponent
+    {
+    }
 }
