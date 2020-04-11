@@ -1,2 +1,2 @@
-# DuckGo.DependencyInjection
+# DependencyInjectionExtensions
 .net core DI 扩展
