@@ -33,8 +33,9 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 throw new ArgumentNullException(nameof(key));
             }
+            services.AddTransient(implementationType);
             ServiceCollectionWithKey.AddServiceWithKey(serviceType, implementationType, key);
-            return services.AddTransient(implementationType);
+            return services;
         }
 
 
@@ -42,14 +43,6 @@ namespace Microsoft.Extensions.DependencyInjection
             where TService : class
             where TImplementation : class, TService
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-            if (key == null)
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
             return services.AddTransientWithKey(typeof(TService), typeof(TImplementation), key);
         }
 
@@ -77,21 +70,14 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 throw new ArgumentNullException(nameof(key));
             }
+            services.AddScoped(implementationType);
             ServiceCollectionWithKey.AddServiceWithKey(serviceType, implementationType, key);
-            return services.AddScoped(implementationType);
+            return services;
         }
         public static IServiceCollection AddScopedWithKey<TService, TImplementation>(this IServiceCollection services, object key)
             where TService : class
             where TImplementation : class, TService
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-            if (key == null)
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
             return services.AddScopedWithKey(typeof(TService), typeof(TImplementation), key);
         }
 
@@ -119,8 +105,9 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 throw new ArgumentNullException(nameof(key));
             }
+            services.AddSingleton(implementationType);
             ServiceCollectionWithKey.AddServiceWithKey(serviceType, implementationType, key);
-            return services.AddSingleton(implementationType);
+            return services;
         }
 
 
@@ -128,14 +115,6 @@ namespace Microsoft.Extensions.DependencyInjection
             where TService : class
             where TImplementation : class, TService
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-            if (key == null)
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
             return services.AddSingletonWithKey(typeof(TService), typeof(TImplementation), key);
         }
 
@@ -163,9 +142,8 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 throw new ArgumentNullException(nameof(key));
             }
-            ServiceCollectionWithKey.AddServiceWithKey(serviceType, implementationInstance, key);
-            //var serviceDescriptor = new ServiceDescriptor(serviceType, implementationInstance);
-            // services.Add(serviceDescriptor);
+            services.AddSingleton(implementationInstance.GetType(), implementationInstance);
+            ServiceCollectionWithKey.AddServiceWithKey(serviceType, implementationInstance.GetType(), key);
             return services;
         }
 
@@ -175,23 +153,11 @@ namespace Microsoft.Extensions.DependencyInjection
             object key)
             where TService : class
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
 
-            if (implementationInstance == null)
-            {
-                throw new ArgumentNullException(nameof(implementationInstance));
-            }
-            if (key == null)
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
             return services.AddSingletonWithKey(typeof(TService), implementationInstance, key);
         }
 
-        public static IServiceCollection AddIocExtension(this IServiceCollection services)
+        public static IServiceCollection AddDependencyInjectionExtension(this IServiceCollection services)
         {
             return services.AddScoped<IServiceProvider>(sp => sp.CreateScope().ServiceProvider)
                            .AddScoped(typeof(IComponentFactory<,>), typeof(ComponentFactory<,>));
@@ -208,16 +174,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection RemoveWithKey<TService>(this IServiceCollection services, object key)
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
-            if (key == null)
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
-
             return services.RemoveWithKey(typeof(TService), key);
         }
 
@@ -238,20 +194,13 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(key));
             }
 
-            object implementation = ServiceCollectionWithKey.GetImplementation(serviceType, key);
-            if (implementation == null)
+            Type implementationType = ServiceCollectionWithKey.GetImplementation(serviceType, key);
+            if (implementationType == null)
             {
                 return services;
             }
-            if (implementation is Type implementationType)
-            {
-                ServiceCollectionWithKey.RemoveServiceWithKey(serviceType, key);
-                RemoveService(services, implementationType);
-            }
-            else
-            {
-                ServiceCollectionWithKey.RemoveServiceWithKey(serviceType, key); 
-            }
+            ServiceCollectionWithKey.RemoveServiceWithKey(serviceType, key);
+            RemoveService(services, implementationType);
             return services;
         }
 
@@ -289,8 +238,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 }
                 if (component.Key != null)
                 {
-                    ServiceCollectionWithKey.AddServiceWithKey(component.ServiceType, implementationType, component.Key);
                     services.Add(new ServiceDescriptor(implementationType, implementationType, component.ServiceLifetime));
+                    ServiceCollectionWithKey.AddServiceWithKey(component.ServiceType, implementationType, component.Key);
                 }
                 else
                 {

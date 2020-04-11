@@ -10,33 +10,37 @@ namespace DependencyInjection
     /// </summary>
     internal static class ServiceCollectionWithKey
     {
-        private readonly static ConcurrentDictionary<Type, ConcurrentDictionary<object,object>> ServiceContainer = new ConcurrentDictionary<Type, ConcurrentDictionary<object, object>>();
+        private readonly static ConcurrentDictionary<Type, ConcurrentDictionary<object,Type>> ServiceContainer = new ConcurrentDictionary<Type, ConcurrentDictionary<object, Type>>();
         public static void AddServiceWithKey<TService, TImplementationType>(object key)
         {
             AddServiceWithKey(typeof(TService), typeof(TImplementationType), key);
         }
 
-        public static void AddServiceWithKey(Type serviceType, object implementationType, object key)
+        public static void AddServiceWithKey(Type serviceType, Type implementationType, object key)
         {
-            ConcurrentDictionary<object, object> container = ServiceContainer.GetOrAdd(serviceType, t => new ConcurrentDictionary<object, object>());
+            ConcurrentDictionary<object, Type> container = ServiceContainer.GetOrAdd(serviceType, t => new ConcurrentDictionary<object, Type>());
             container.AddOrUpdate(key, implementationType, (_key, oldType) => implementationType);
         }
 
         public static void RemoveServiceWithKey(Type serviceType, object key)
         {
-            if (ServiceContainer.TryGetValue(serviceType, out ConcurrentDictionary<object, object> container))
+            if (ServiceContainer.TryGetValue(serviceType, out ConcurrentDictionary<object, Type> container))
             {
-                container.TryRemove(key, out object existObj);
+                container.TryRemove(key, out Type existObj);
+                if(container.Count==0)
+                {
+                    ServiceContainer.TryRemove(serviceType, out container);
+                }
             }
         }
 
-        public static object GetImplementation(Type serviceType, object key)
+        public static Type GetImplementation(Type serviceType, object key)
         {
-            if (!ServiceContainer.TryGetValue(serviceType, out ConcurrentDictionary<object, object> container))
+            if (!ServiceContainer.TryGetValue(serviceType, out ConcurrentDictionary<object, Type> container))
             {
                 return null;
             }
-            if (!container.TryGetValue(key, out object implementation))
+            if (!container.TryGetValue(key, out Type implementation))
             {
                 return null;
             }

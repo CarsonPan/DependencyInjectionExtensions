@@ -24,33 +24,18 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 throw new ArgumentNullException(nameof(key));
             }
-            object implementation = ServiceCollectionWithKey.GetImplementation(serviceType, key);
+            Type implementationType = ServiceCollectionWithKey.GetImplementation(serviceType, key);
             //如果没有认为存在，直接返回null
-            if (implementation == null)
+            if (implementationType == null)
             {
                 return null;
             }
-            if (implementation is Type implementationType)
-            {
-
-                return provider.GetService(implementationType);
-            }
-            else
-            {
-                return implementation;
-            }
+          return provider.GetService(implementationType);
+            
         }
         public static TService GetServiceWithKey<TService>(this IServiceProvider provider, object key)
             where TService : class
         {
-            if (provider == null)
-            {
-                throw new ArgumentNullException(nameof(provider));
-            }
-            if (key == null)
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
             return (TService)provider.GetServiceWithKey(typeof(TService), key);
         }
 
@@ -68,32 +53,18 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 throw new ArgumentNullException(nameof(key));
             }
-            object implementation = ServiceCollectionWithKey.GetImplementation(serviceType, key);
+            Type implementationType = ServiceCollectionWithKey.GetImplementation(serviceType, key);
             //如果没有认为存在，直接返回null
-            if (implementation == null)
+            if (implementationType == null)
             {
                 throw new InvalidOperationException($"No service for type '{serviceType}' has been registered.");
             }
-            if (implementation is Type implementationType)
-            {
-
+            
                 return provider.GetRequiredService(implementationType);
-            }
-            else
-            {
-                return implementation;
-            }
+            
         }
         public static TService GetRequiredServiceWithKey<TService>(this IServiceProvider provider, object key)
         {
-            if (provider == null)
-            {
-                throw new ArgumentNullException(nameof(provider));
-            }
-            if (key == null)
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
             return (TService)provider.GetRequiredServiceWithKey(typeof(TService), key);
         }
     }
