@@ -1,11 +1,11 @@
-﻿using DependencyInjection;
+﻿using DependencyInjectionExtensions;
 using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace DuckGo.DependencyInjectionTest
+namespace DependencyInjectionExtensionsTest
 {
     public  class ServiceCollectionWithKeyTest
     {

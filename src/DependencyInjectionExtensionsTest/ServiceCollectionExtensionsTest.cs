@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using Xunit;
 
-namespace DuckGo.DependencyInjectionTest
+namespace DependencyInjectionExtensionsTest
 {
     public class ServiceCollectionExtensionsTest
     {

@@ -1,4 +1,4 @@
-﻿using DuckGo.DependencyInjection;
+﻿using DependencyInjectionExtensions;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System;
@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using Xunit;
 
-namespace DuckGo.DependencyInjectionTest
+namespace DependencyInjectionExtensionsTest
 {
     public interface IScopedMoq0 
     {

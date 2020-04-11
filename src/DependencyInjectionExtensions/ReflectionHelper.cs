@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-namespace DuckGo.DependencyInjection
+namespace DependencyInjectionExtensions
 {
     public static class ReflectionHelper
     {

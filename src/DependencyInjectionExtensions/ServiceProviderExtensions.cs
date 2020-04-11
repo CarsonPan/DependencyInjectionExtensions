@@ -1,4 +1,4 @@
-﻿using DependencyInjection;
+﻿using DependencyInjectionExtensions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,6 +10,10 @@ namespace Microsoft.Extensions.DependencyInjection
     /// </summary>
     public static class ServiceProviderExtensions
     {
+        private static ServiceCollectionWithKey GetServiceContainer(this IServiceProvider provider)
+        {
+            return provider.GetService<ServiceCollectionWithKey>();
+        }
         public static object GetServiceWithKey(this IServiceProvider provider,Type serviceType,object key)
         {
             if (provider == null)
@@ -24,7 +28,8 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 throw new ArgumentNullException(nameof(key));
             }
-            Type implementationType = ServiceCollectionWithKey.GetImplementation(serviceType, key);
+            
+            Type implementationType = provider.GetServiceContainer()?.GetImplementation(serviceType, key);
             //如果没有认为存在，直接返回null
             if (implementationType == null)
             {
@@ -53,7 +58,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 throw new ArgumentNullException(nameof(key));
             }
-            Type implementationType = ServiceCollectionWithKey.GetImplementation(serviceType, key);
+            Type implementationType = provider.GetServiceContainer()?.GetImplementation(serviceType, key);
             //如果没有认为存在，直接返回null
             if (implementationType == null)
             {
