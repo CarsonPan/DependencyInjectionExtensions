@@ -161,8 +161,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddDependencyInjectionExtensions(this IServiceCollection services)
         {
-            return services.AddScoped<IServiceProvider>(sp => sp.CreateScope().ServiceProvider)
-                           .AddScoped(typeof(IComponentFactory<,>), typeof(ComponentFactory<,>));
+            return services.AddScoped(typeof(IComponentFactory<,>), typeof(ComponentFactory<,>));
         }
         private static object _root = new object();
         private static ServiceCollectionWithKey GetServiceContainer(this IServiceCollection services)
